@@ -49,6 +49,7 @@ from litellm.types.llms.vertex_ai import (
     LogprobsResult,
     ToolConfig,
     Tools,
+    Retrieval,
 )
 from litellm.types.utils import (
     ChatCompletionTokenLogprob,
@@ -237,6 +238,7 @@ class VertexGeminiConfig(VertexAIBaseConfig, BaseConfig):
         gtool_func_declarations = []
         googleSearch: Optional[dict] = None
         googleSearchRetrieval: Optional[dict] = None
+        retrieval: Optional[Retrieval] = None
         code_execution: Optional[dict] = None
         # remove 'additionalProperties' from tools
         value = _remove_additional_properties(value)
@@ -270,6 +272,8 @@ class VertexGeminiConfig(VertexAIBaseConfig, BaseConfig):
                 googleSearch = tool["googleSearch"]
             elif tool.get("googleSearchRetrieval", None) is not None:
                 googleSearchRetrieval = tool["googleSearchRetrieval"]
+            elif tool.get("retrieval", None) is not None:
+                retrieval = tool["retrieval"]
             elif tool.get("code_execution", None) is not None:
                 code_execution = tool["code_execution"]
             elif openai_function_object is not None:
@@ -296,6 +300,8 @@ class VertexGeminiConfig(VertexAIBaseConfig, BaseConfig):
             _tools["googleSearch"] = googleSearch
         if googleSearchRetrieval is not None:
             _tools["googleSearchRetrieval"] = googleSearchRetrieval
+        if retrieval is not None:
+            _tools["retrieval"] = retrieval
         if code_execution is not None:
             _tools["code_execution"] = code_execution
         return [_tools]

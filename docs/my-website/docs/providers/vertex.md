@@ -364,7 +364,15 @@ from litellm import completion
 ## SETUP ENVIRONMENT
 # !gcloud auth application-default login - run this to add vertex credentials to your env
 
-tools = [{"googleSearchRetrieval": {}}] # 👈 ADD GOOGLE SEARCH
+tools = [
+  {"googleSearchRetrieval": {}}, # 👈 ADD GOOGLE SEARCH
+  {"googleSearch": {}}, # 👈 ADD GOOGLE SEARCH To Gemini-2.0
+  {"retrieval": { # 👈 ADD VertexAI Search
+    "vertexAiSearch": {
+      "datastore":  "projects/PROJECT_ID/locations/global/collections/default_collection/dataStores/DATA_STORE_ID"
+    }
+  }
+] 
 
 resp = litellm.completion(
                     model="vertex_ai/gemini-1.0-pro-001",
@@ -388,7 +396,13 @@ curl http://localhost:4000/v1/chat/completions \
     ],
    "tools": [
         {
-            "googleSearchRetrieval": {} 
+            "googleSearchRetrieval": {},
+            "googleSearch": {},
+            "retrieval": {
+                "vertexAiSearch": {
+                    "datastore":  "projects/PROJECT_ID/locations/global/collections/default_collection/dataStores/DATA_STORE_ID"
+                }
+            }
         }
     ]
   }'
